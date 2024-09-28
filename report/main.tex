@@ -6,47 +6,76 @@
 \usepackage{enumitem}
 \usepackage{lastpage}
 
-\firstpageno{1}
+\makeatletter
 
-\begin{document}
+\let\@oldsection\section
+\renewcommand\section[1]{\@oldsection*{#1}}
+
+\let\@oldsubsection\subsection
+\renewcommand\subsection[1]{\@oldsubsection*{\textit{#1}}}
+
+\makeatother
 
 \title{02450 Report 1}
 
-\author{
-	\name Gisle Joe Garen \email s242715 \\
-	\AND
-	\name Ignacio Ripoll González \email s242875 \\
-	\AND
-	\name Sebastian Svelmøe Timm \email s243935 \\
-}
 
-\editor{My editor}
+\begin{document}
 
-\maketitle
+\maketitle\vspace{-3em}
 
-\section*{Introduction}
+\section{Table of authors and their contributions}
 
-TBD
+\begin{center}
+	\begin{tabular}{| r | l | l | l |}
+		\hline
+				Name & Gisle Joe Garen & Ignacio Ripoll González & Sebastian Svelmøe Timm\\
+		Student ID   & s242712 & s242875 & s243935\\
+		\hline
+		Introduction & 10\% & 80\% & 10\%\\
+			  Task 1 & 10\% & 80\% & 10\%\\
+			  Task 2 & 45\% & 45\% & 10\%\\
+			  Task 3 & 80\% & 10\% & 10\%\\
+			  Task 4 & 10\% & 10\% & 80\%\\
+			Problems & 10\% & 10\% & 80\%\\
+		\hline
+	\end{tabular}
+\end{center}
 
-\section*{Task 1}
-
-TBD
-
-\section*{Task 2}
-
-TBD
-
-\section*{Task 3}
-
-TBD
-
-\section*{Task 4}
+\section{Introduction}
 
 TBD
 
-\section*{Exam Problems}
+\section{Task 1}
 
-\subsection*{Question 1}
+\subsection{one, two, three, this is a test}
+
+The Titanic dataset not only provides a valuable resource for statistical analysis but also offers a glimpse into one of the most infamous maritime disasters in history. The RMS Titanic set sail from Southampton, England, on April 10, 1912, bound for New York City. On board were over 2,200 passengers and crew. Tragically, on the night of April 14, 1912, the Titanic struck an iceberg and sank within a few hours. Of the more than 2,200 people on board, over 1,500 lost their lives.
+
+The ship sank due to a combination of design flaws, including insufficient watertight compartments, and the collision with the iceberg, which breached the hull. A critical factor in the high death toll was the lack of lifeboats. The Titanic carried lifeboats for only about half of those aboard, meaning that when the ship began to sink, not everyone had a chance to escape.
+
+The overall problem of interest in studying the Titanic dataset is to identify which demographic, socio-economic, and other relevant characteristics influenced survival rates during the disaster. The dataset includes information on passenger class, gender, age, fare, family size, and more, allowing us to analyze patterns and key factors affecting survival probabilities. It is particularly compelling because the lifeboat shortage necessitated prioritizing passengers, with those in higher social classes, such as first-class passengers, being given precedence during evacuation. By examining these factors, we can gain insights into how class, age, gender, and other variables impacted survival, revealing broader socio-economic dynamics and human behavior in life-and-death situations.
+
+
+
+The Titanic dataset was obtained from Kaggle, a popular platform for data science competitions and datasets. You can access the data via the following link: Kaggle Titanic Dataset. The data is provided in two separate datasets: one for training and one for testing. The training dataset includes the information used to build predictive models, while the testing dataset is used to evaluate the performance of these models.
+
+
+
+\section{Task 2}
+
+TBD
+
+\section{Task 3}
+
+TBD
+
+\section{Task 4}
+
+TBD
+
+\section{Exam Problems}
+
+\subsection{Question 1}
 
 The only correct statement is C. The justification is:
 
@@ -70,7 +99,7 @@ The only correct statement is C. The justification is:
 
 The statements A, B, and D are all incorrect as they mistake \(x_1\) for something other than an ordinal variable.
 
-\subsection*{Question 2}
+\subsection{Question 2}
 
 \begin{enumerate}[label=\Alph*.]
 	\item This statement is correct since \(|26 - 19| = 7\) and that is the maximal difference among the respective coordinates of the two vectors.
@@ -95,7 +124,7 @@ The statements A, B, and D are all incorrect as they mistake \(x_1\) for somethi
 
 \end{enumerate}
 
-\subsection*{Question 3}
+\subsection{Question 3}
 
 \begin{enumerate}[label=\Alph*.]
 	\item The explained variance is
@@ -124,7 +153,7 @@ The statements A, B, and D are all incorrect as they mistake \(x_1\) for somethi
 
 \end{enumerate}
 
-\subsection*{Question 4}
+\subsection{Question 4}
 
 \begin{enumerate}[label=\Alph*.]
 	\item Such an observation will typically have a negative value as the high values of the third and fourth coordinates will make the negative coordinates of the principal component dominate. The statement is false.
@@ -136,7 +165,7 @@ The statements A, B, and D are all incorrect as they mistake \(x_1\) for somethi
 	\item The only negative coordinate of the principal component is the first one. As the observation has a low value in this position, and high values everywhere else, the dot product will typically be positive. The statement is correct.
 	\end{enumerate}
 
-\subsection*{Question 5}
+\subsection{Question 5}
 
 We are given the following data:
 \[
@@ -148,7 +177,7 @@ The Jaccard similarity of the documents is
 \]
 The correct answer is A.
 
-\subsection*{Question 6}
+\subsection{Question 6}
 
 The probability \(p(\hat{x}_2 = 0 \, | \, y = 2)\) can be found by marginalizing on \(\hat{x}_7\). This results in the probability
 \[
