@@ -2,6 +2,7 @@ from invoke import task
 
 @task
 def build(ctx):
+    ctx.run('latexmk -pdf table.tex')
     ctx.run('latexmk -pdf main.tex')
 
 @task
