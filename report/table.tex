@@ -2,6 +2,7 @@
 
 \usepackage[preprint]{jmlr2e}
 \usepackage[a3paper]{geometry}
+\setcounter{page}{9}
 
 
 \begin{document}
@@ -12,19 +13,19 @@
 \begin{table}[h!]
 	\centering
 	\begin{tabular}{|l|l|l|p{8cm}|}
-	\hline
-	\textbf{Attribute} & \textbf{Discrete/ Continuous} & \textbf{Type} & \textbf{Explanation} \\ \hline
-	Survived & Discrete & Nominal & This is a binary attribute (0 = did not survive, 1 = survived) with no inherent order between the categories. It simply represents a classification into two distinct groups. \\ \hline
-	Pclass (Passenger Class) & Discrete & Ordinal & Pclass indicates the socio-economic class of the passenger (1 = first class, 2 = second class, 3 = third class). Although it is a discrete variable, it is ordinal because there is a clear hierarchy (first class is higher in rank than second or third). \\ \hline
-	Name & Discrete & Nominal & The Name attribute is a string (text) variable that uniquely identifies passengers. Since there is no inherent order or numerical relationship between names, it is nominal. \\ \hline
-	Sex & Discrete & Nominal & The Sex attribute represents the gender of the passenger (male/female). This is a nominal variable as the categories are distinct and there is no order. \\ \hline
-	Age & Continuous & Ratio & Age is a continuous variable that represents the passenger’s age. Since age has a meaningful zero point (birth) and the differences between values are consistent, it is measured on a ratio scale. \\ \hline
-	SibSp (Number of Siblings/Spouses Aboard) & Discrete & Ratio & SibSp is a count of how many siblings or spouses a passenger had aboard. It is discrete because it represents a count, and ratio because it has a meaningful zero and equal intervals. \\ \hline
-	Parch (Number of Parents/Children Aboard) & Discrete & Ratio & Parch is a count of how many parents or children a passenger had aboard. Like SibSp, it is a discrete variable on a ratio scale with a meaningful zero. \\ \hline
-	Ticket & Discrete & Nominal & The Ticket attribute is an identifier for the passenger's ticket. It is nominal because it consists of text or numerical codes that do not have any intrinsic order. \\ \hline
-	Fare & Continuous & Ratio & Fare represents the amount of money the passenger paid for the ticket. It is a continuous variable with a meaningful zero (no fare), and the differences between values are meaningful, making it a ratio variable. \\ \hline
-	Cabin & Discrete & Nominal & The Cabin attribute is a string that represents the cabin number assigned to the passenger. It is nominal because the cabin numbers are simply labels with no inherent numerical or ordered relationship. \\ \hline
-	Embarked (Port of Embarkation) & Discrete & Nominal & This attribute indicates the port where the passenger boarded the Titanic (C = Cherbourg, Q = Queenstown, S = Southampton). Since there is no natural ordering between these ports, it is a nominal variable. \\ \hline
+		\hline
+		\textbf{Attribute} & \textbf{Discrete/ Continuous} & \textbf{Type} & \textbf{Explanation} \\ \hline
+		Survived & Discrete & Nominal & This is a binary attribute (0 = did not survive, 1 = survived) with no inherent order between the categories. It simply represents a classification into two distinct groups. \\ \hline
+		Pclass (Passenger Class) & Discrete & Ordinal & Pclass indicates the socio-economic class of the passenger (1 = first class, 2 = second class, 3 = third class). Although it is a discrete variable, it is ordinal because there is a clear hierarchy (first class is higher in rank than second or third). \\ \hline
+		Name & Discrete & Nominal & The Name attribute is a string (text) variable that uniquely identifies passengers. Since there is no inherent order or numerical relationship between names, it is nominal. \\ \hline
+		Sex & Discrete & Nominal & The Sex attribute represents the gender of the passenger (male/female). This is a nominal variable as the categories are distinct and there is no order. \\ \hline
+		Age & Continuous & Ratio & Age is a continuous variable that represents the passenger’s age. Since age has a meaningful zero point (birth) and the differences between values are consistent, it is measured on a ratio scale. \\ \hline
+		SibSp (Number of Siblings/Spouses Aboard) & Discrete & Ratio & SibSp is a count of how many siblings or spouses a passenger had aboard. It is discrete because it represents a count, and ratio because it has a meaningful zero and equal intervals. \\ \hline
+		Parch (Number of Parents/Children Aboard) & Discrete & Ratio & Parch is a count of how many parents or children a passenger had aboard. Like SibSp, it is a discrete variable on a ratio scale with a meaningful zero. \\ \hline
+		Ticket & Discrete & Nominal & The Ticket attribute is an identifier for the passenger's ticket. It is nominal because it consists of text or numerical codes that do not have any intrinsic order. \\ \hline
+		Fare & Continuous & Ratio & Fare represents the amount of money the passenger paid for the ticket. It is a continuous variable with a meaningful zero (no fare), and the differences between values are meaningful, making it a ratio variable. \\ \hline
+		Cabin & Discrete & Nominal & The Cabin attribute is a string that represents the cabin number assigned to the passenger. It is nominal because the cabin numbers are simply labels with no inherent numerical or ordered relationship. \\ \hline
+		Embarked (Port of Embarkation) & Discrete & Nominal & This attribute indicates the port where the passenger boarded the Titanic (C = Cherbourg, Q = Queenstown, S = Southampton). Since there is no natural ordering between these ports, it is a nominal variable. \\ \hline
 	\end{tabular}
 	\caption{Summary of Titanic Dataset Attributes by Type and Measurement Scale}
 	\label{table:description}

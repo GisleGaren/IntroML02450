@@ -8,3 +8,4 @@ def build(ctx):
 @task
 def clean(ctx):
     ctx.run('latexmk -c main.tex')
+    ctx.run('latexmk -c table.tex')

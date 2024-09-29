@@ -190,6 +190,8 @@ These data issues highlight the need for preprocessing steps, such as handling m
 
 TBD
 
+\includepdf[pages=-,pagecommand=\thispagestyle{plain}]{analysis}
+
 
 \section{Task 4}
 
@@ -202,21 +204,13 @@ TBD
 The only correct statement is C. The justification is:
 
 \begin{itemize}
-\item
-  The variable \(x_1\) represents the time of day in blocks of 30
-  minutes that partition a day into a finite number of intervals. The
-  variable is therefore discrete. Since the intervals can be ordered,
-  the variable is ordinal.
-\item
-  The attribute \(x_6\) is a ratio variable. The number of broken
-  traffic lights is clearly a numeric variable. The cannonical zero of
-  the variable is zero broken traffic lights.
-\item
-  The attribute \(x_7\) is a ratio variable for much the same reasons as
-  for \(x_6\).
-\item
-  The congestion level is ordinal as it is a discrete variable that can
-  be ordered.
+	\item The variable \(x_1\) represents the time of day in blocks of 30 minutes that partition a day into a finite number of intervals. The variable is therefore discrete. Since the intervals can be ordered, the variable is ordinal.
+
+	\item The attribute \(x_6\) is a ratio variable. The number of broken traffic lights is clearly a numeric variable. The cannonical zero of the variable is zero broken traffic lights.
+
+	\item The attribute \(x_7\) is a ratio variable for much the same reasons as for \(x_6\).
+
+	\item The congestion level is ordinal as it is a discrete variable that can be ordered.
 \end{itemize}
 
 The statements A, B, and D are all incorrect as they mistake \(x_1\) for something other than an ordinal variable.
@@ -308,11 +302,15 @@ The probability \(p(\hat{x}_2 = 0 \, | \, y = 2)\) can be found by marginalizing
 \]
 The correct answer is B.
 
-\includepdf[pages=1,fitpaper=true,addtolist={%
-	1,%
-	table,%
-	A test figure included with the help of the \texttt{pdfpages} package,%
-	table:description%
-}]{table}
+\includepdf[
+	pages=1,%
+	fitpaper=true,%
+	addtolist={%
+		1,%
+		table,%
+		{Description of the dataset},%
+		table:description%
+	}%
+]{table}
 
 \end{document}
