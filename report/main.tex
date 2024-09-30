@@ -5,6 +5,8 @@
 \allowdisplaybreaks
 \usepackage{enumitem}
 \usepackage{pdfpages}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, urlcolor=cyan}
 
 \makeatletter
 
@@ -62,7 +64,7 @@ The overall problem of interest in studying the Titanic dataset is to identify w
 
 \subsection{Provide a reference to where you obtained the data.}
 
-The Titanic dataset was obtained from Kaggle, a popular platform for data science competitions and datasets. You can access the data via the following link: \textit{Kaggle Titanic Dataset}. The data is provided in two separate datasets: one for training and one for testing. The training dataset includes the information used to build predictive models, while the testing dataset is used to evaluate the performance of these models.
+The Titanic dataset was obtained from Kaggle, a popular platform for data science competitions and datasets. You can access the data via the following link: \href{https://www.kaggle.com/c/titanic/data}{Kaggle Titanic Dataset}. The data is provided in two separate datasets: one for training and one for testing. The training dataset includes the information used to build predictive models, while the testing dataset is used to evaluate the performance of these models.
 
 \subsection{Summarize previous analysis of the data.}
 
@@ -103,19 +105,20 @@ In the Titanic dataset, we can approach the classification and regression tasks 
 
 \subsubsection{Classification Task:}
 
-\paragraph{Class Label to Predict:} Survived (a binary outcome where 0 indicates the passenger did not survive and 1 indicates survival). \\
+\paragraph{Class Label to Predict:} Survived (a binary outcome where 0 indicates the passenger did not survive and 1 indicates survival).
 
 \paragraph{Predictor Attributes:} We will predict survival based on attributes such as Pclass, Age, Sex, Fare, SibSp, Parch, and Embarked. These attributes are likely to influence whether a passenger survived the sinking of the Titanic, and analyzing their impact can provide insights into survival patterns and key factors affecting survival rates.
 
 \subsubsection{Regression Task:}
 
-\paragraph{Attribute to Predict:} Fare
+\paragraph{Attribute to Predict:} Fare.
 
 \paragraph{Predictor Attributes:} We will predict the fare based on attributes such as Pclass (passenger class), Age, SibSp (number of siblings/spouses aboard), Parch (number of parents/children aboard), Sex, and Embarked (port of embarkation). These predictors can help us understand how different factors influence the fare a passenger paid.
 
 By using these attributes in classification and regression, we aim to build models that can predict the survival status and fare of passengers, respectively, based on their characteristics and other relevant information.
 
 \subsection{If you need to transform the data in order to carry out these tasks, explain roughly how you plan to do this.}
+
 To effectively carry out the classification and regression tasks, we will need to transform the Titanic dataset to address various quality issues and prepare it for analysis. Here’s a rough plan for transforming the data:
 
 \begin{itemize}
@@ -155,9 +158,7 @@ By addressing these data quality issues and performing these transformations, we
 \section{Task 2: Data Attribute Description and Issues}
 
 \subsection{Attribute Types and Measurement Scales}
-This section provides a detailed explanation of the attributes in the Titanic dataset, categorizing each as discrete or continuous and identifying their corresponding measurement scales: Nominal, Ordinal, Interval, or Ratio. Understanding the nature of these variables is essential for selecting the appropriate analysis techniques in subsequent stages.
-
-THIS IS A REFERENCE \ref{table:description}.
+This section provides a detailed explanation of the attributes in the Titanic dataset, categorizing each as discrete or continuous and identifying their corresponding measurement scales: Nominal, Ordinal, Interval, or Ratio. Understanding the nature of these variables is essential for selecting the appropriate analysis techniques in subsequent stages. For a full overview of the attributes, see table \ref{table:description} in the appendix.
 
 Each of these attributes serves a distinct role in analysis, with discrete variables often used for classification and categorical comparisons, and continuous variables applied in regression or to explore relationships like fares and age.
 
@@ -195,7 +196,13 @@ TBD
 
 \section{Task 4}
 
-TBD
+In the preceding three task, we have explored the Titanic dataset to assess its quality and suitability for classification and regression tasks. The key interest in the dataset is the possibility of finding patterns in the demographic factors of the passengers that could explain their survival rate. This is a noteworthy problem, as the Titanic carried insufficient lifeboats to save all of its passengers. It is therefore insightful to determine whether the crisis adversely affected certain demographic groups or if survival was arbitrary.
+
+This is by no means a novel analysis. Many previous analyses exist that also deal with the problem of detecting any pattern between the other variables and survivorship. The chief challenge that all prior analyses have faced is the quality of the data. Some variables have missing data. Also, survivorship is not a balanced variable. This results in some data wrangling challenges. However, since most of the variables are typical demographic variables, it should be possible to treat them all using standard techniques, e.g. imputation for missing values, and still obtain decent results.
+
+Our principal component analysis reveals that a significant number of principal components is needed to explain most of the variance in the dataset. This, again, convolutes any potential classification or regression analysis, as many of the datasets dimensions will need to be accounted for. And even with the dimensions accounted for, any clear pattern may not be guaranteed.
+
+However, none of these challenges foreclose statistical analysis. Most datasets are somewhat messy and need cleaning. The Titanic dataset is no different. Our principal component analysis demonstrates that it is possible to make sense of the dimensions captured in the dataset. Prior analyses also demonstrate the feasibility of working with the dataset. We therefore judge that we will be able to complete our classification and regression analyses of the data.
 
 \section{Exam Problems}
 
