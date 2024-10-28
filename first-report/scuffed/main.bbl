@@ -1,0 +1,27 @@
+\begin{thebibliography}{3}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[CodeSignal()]{signal}
+CodeSignal.
+\newblock Data preprocessing: The titanic dataset exploration.
+\newblock URL
+  \url{https://learn.codesignal.com/preview/lessons/739/data-preprocessing-the-titanic-dataset-exploration}.
+
+\bibitem[Droste(2020)]{droste}
+Benedikt Droste.
+\newblock Machine learning with the titanic dataset, April 2020.
+\newblock URL
+  \url{https://people.sc.fsu.edu/~jburkardt/classes/ml_2023/datasets/titanic.pdf}.
+
+\bibitem[Realm(2023)]{hackers}
+Hackers Realm.
+\newblock Titanic dataset analysis using python (kaggle) | classification |
+  machine learning project tutorial, June 2023.
+\newblock URL
+  \url{https://www.hackersrealm.net/post/titanic-dataset-analysis-using-python}.
+
+\end{thebibliography}
