@@ -22,73 +22,23 @@ def main():
     # Prepare data for two fold cross validation
     X = np.hstack([np.ones((df_standardized.shape[0], 1)), df_standardized])
     y = df['Fare'].values
-    k1 = 2
-    k2 = 2
-    models = ['baseline', 'ann']
+    k1 = 10
+    k2 = 10
 
-    print(ann_two_level_cv(k1, k2, X, y))
+    # Model parameters
+    ann_parameters = [1, 5, 10, 15]
+    reg_parameters = np.power(10.0, range(-2, 6))
 
-    # return two_level_cross_validation(X, y, k1, k2, models)
-
-
-def two_level_cross_validation(X, y, k1, k2, models):
-    s = len(models)
-    test_error = np.empty(k1)
-    outer_cv = model_selection.KFold(k1, shuffle=True)
-    outer_split = enumerate(outer_cv.split(X, y))
-
-    print('| Fold number '
-          '| ANN test error '
-          '| Linear regression test error '
-          '| Baseline test error |')
-    print('|---|-----|-----|---------|')
-    for outer_fold, (outer_train_index, outer_test_index) in outer_split:
-        X_outer_train = X[outer_train_index]
-        y_outer_train = y[outer_train_index]
-        X_outer_test = X[outer_test_index]
-        y_outer_test = y[outer_test_index]
-
-        validation_error = np.empty((s, k2))
-        inner_cv = model_selection.KFold(k2, shuffle=True)
-        inner_split = enumerate(inner_cv.split(X_outer_train, y_outer_train))
-
-        for inner_fold, (inner_train_index, inner_test_index) in inner_split:
-            X_inner_train = X_outer_train[inner_train_index]
-            y_inner_train = y_outer_train[inner_train_index]
-            X_inner_test = X_outer_train[inner_test_index]
-            y_inner_test = y_outer_train[inner_test_index]
-
-            for i, model in enumerate(models):
-                model = train(model, X_inner_train, y_inner_train)
-                error = test(model, X_inner_test, y_inner_test)
-                error /= X_outer_train.shape[0]
-                error *= X_inner_train.shape[0]
-                validation_error[i, inner_fold] = error
-
-        optimal_index = validation_error.sum(axis=1).argmin()
-        model = models[optimal_index]
-        model = train(model, X_outer_train, y_outer_train)
-        error = test(model, X_outer_test, y_outer_test)
-        error /= X.shape[0]
-        error *= X_outer_train.shape[0]
-        print(f'| {outer_fold} | N/A | N/A | {error:7.2f} |')
-        test_error[outer_fold] = error
-
-    return test_error.sum()
+    # Do two level cross validation
+    errors = two_level_cv(k1, k2, X, y, ann_parameters, reg_parameters)
+    # Report errors
+    table = make_table(k1, *errors)
+    with open('table.tex', 'w') as fp:
+        fp.write(table)
+    print(table)
 
 
-def train(model, X, y):
-    if model == 'ann':
-        return train_ann(X, y)
-    elif model == 'regression':
-        assert False
-    elif model == 'baseline':
-        return train_baseline(X, y)
-    else:
-        assert False
-
-
-def ann_two_level_cv(k1, k2, X, y):
+def two_level_cv(k1, k2, X, y, ann_parameters, reg_parameters):
     # Number of features
     M = X.shape[1]
     # Error calculation
@@ -96,15 +46,15 @@ def ann_two_level_cv(k1, k2, X, y):
 
     # Data for two level cross validation of ANN
     ## model parameters
-    hidden_units_parameters = [1]
+    hidden_units_parameters = ann_parameters
     ## Training parameters
-    n_replicates = 1
+    n_replicates = 3
     max_iter = 10_000
     loss_fn = torch.nn.MSELoss()
     ## The number of models to test
     s = len(hidden_units_parameters)
     ## The list of models to test
-    models = [
+    ann_models = [
         lambda: torch.nn.Sequential(
             torch.nn.Linear(M, n_hidden_units),
             torch.nn.Tanh(),
@@ -114,7 +64,7 @@ def ann_two_level_cv(k1, k2, X, y):
 
     # Data for two level cross validation of regularized linear regression
     ## model parameters
-    regularization_parameters = [0]
+    regularization_parameters = reg_parameters
     ## The number of models to test
     t = len(regularization_parameters)
 
@@ -157,7 +107,7 @@ def ann_two_level_cv(k1, k2, X, y):
             # ANN Inner Fold
             print('Training ANN\'s')
             ## Train each model and validate it on the inner train/test split
-            for i, model in enumerate(models):
+            for i, model in enumerate(ann_models):
                 net, _, _ = train_neural_net(
                     model,
                     loss_fn,
@@ -171,12 +121,29 @@ def ann_two_level_cv(k1, k2, X, y):
                 mse = mean_squared_error(y_inner_test, y_estimates)
                 ann_validation_error[i, inner_fold] = mse
 
+            # Regression Inner Fold
+            print('Training regression')
+            ## Precompute terms involving the design matrix
+            Xty = X_inner_train.T @ y_inner_train
+            XtX = X_inner_train.T @ X_inner_train
+            ## Train each model and validate it on the inner train/test split
+            for i, regularization_parameter in enumerate(regularization_parameters):
+                # Prepare matrix of regularization terms
+                lambdas = regularization_parameter * np.eye(M)
+                lambdas[0, 0] = 0
+                # Solve for model weights
+                w = np.linalg.solve(XtX + lambdas, Xty).squeeze()
+                # Determine validation error
+                y_estimates = X_inner_test @ w.T
+                mse = mean_squared_error(y_inner_test, y_estimates)
+                reg_validation_error[i, inner_fold] = mse
+
         # ANN Outer Fold
         print(f'Training optimal ANN for outer fold n. {outer_fold}')
         ## Extract the optimal ANN model
         optimal_index = ann_validation_error.sum(axis=1).argmin()
         optimal_n_hidden_units = hidden_units_parameters[optimal_index]
-        model = models[optimal_index]
+        model = ann_models[optimal_index]
         ## Train the optimal ANN model
         net, _, _ = train_neural_net(
             model,
@@ -193,6 +160,25 @@ def ann_two_level_cv(k1, k2, X, y):
         ann_test_error[outer_fold, 0] = optimal_n_hidden_units
         ann_test_error[outer_fold, 1] = mse
 
+        # Regression Outer Fold
+        print(f'Training optimal regression for outer fold n. {outer_fold}')
+        ## Precompute terms involving the design matrix
+        Xty = X_outer_train.T @ y_outer_train
+        XtX = X_outer_train.T @ X_outer_train
+        ## Extract optimal regression model
+        optimal_index = reg_validation_error.sum(axis=1).argmin()
+        optimal_regularization_parameter = regularization_parameters[optimal_index]
+        ## Prepare matrix of regularization terms
+        lambdas = optimal_regularization_parameter * np.eye(M)
+        lambdas[0, 0] = 0
+        ## Solve for model weights
+        w = np.linalg.solve(XtX + lambdas, Xty).squeeze()
+        ## Determine test error
+        y_estimates = X_outer_test @ w.T
+        mse = mean_squared_error(y_outer_test, y_estimates)
+        reg_test_error[outer_fold, 0] = optimal_regularization_parameter
+        reg_test_error[outer_fold, 1] = mse
+
         # Baseline Outer Fold
         print(f'Training baseline model for outer fold n. {outer_fold}')
         baseline_model = lambda x: y_outer_train.mean()
@@ -202,16 +188,21 @@ def ann_two_level_cv(k1, k2, X, y):
 
     print('Two layer cross validation finished for all models')
 
-    return ann_test_error, baseline_test_error
+    return ann_test_error, reg_test_error, baseline_test_error
 
 
-def train_baseline(X, y):
-    return lambda x: y.mean()
+def make_table(k1, ann_test_error, reg_test_error, baseline_test_error):
+    rows = []
+    for i in range(k1):
+        row = (
+            f'{k1} '
+            f'& {ann_test_error[i, 0]} & {ann_test_error[i, 1]} '
+            f'& {reg_test_error[i, 0]} & {reg_test_error[i, 1]} '
+            f'& {baseline_test_error[i]} \\\\'
+        )
+        rows.append(row)
+    return '\n'.join(rows)
 
 
-def test(model, X, y):
-    error_accumulator = 0.0
-    for i, x in enumerate(X):
-        y_hat = model(x)
-        error_accumulator += (y[i] - y_hat) * (y[i] - y_hat)
-    return error_accumulator / y.shape[0]
+if __name__ == '__main__':
+    main()
