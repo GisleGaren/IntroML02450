@@ -1,0 +1,129 @@
+\subsection*{Part B}
+
+\subsubsection*{1. Implement two-level cross validation}
+
+Our implementation can be found in the file \texttt{regression.py}.
+It is a simple implementation that has not been developed for reuse
+—it simply executes the two-level cross validation for
+the neural network, the linear regression, and the baseline model.
+To produce the output, we have carried out the same data cleaning procedure
+as outlined in part A.
+
+For the linear regression, we will reuse the parameter range of \([10^{-2}, 10^6]\).
+For the neural network, we have restricted the parameter range to the values
+\(\{1, 3, 5, 10\}\).
+
+\subsubsection*{2. Outline the results in a table}
+
+The output from our implementation of two-level cross validation
+for the three models under consideration is outlined in table \ref{table:two-cv}.
+It is interesting to note that both the neural network and the linear
+regression oscillate between two optimal parameter values.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{r r r r r r}
+		\hline
+		\multicolumn{1}{c}{Outer fold} & \multicolumn{2}{c}{ANN}
+		& \multicolumn{2}{c}{Linear regression} & \multicolumn{1}{c}{Baseline} \\
+		\(i\) & \(h_i^*\) & \(E_i^\text{test}\)
+		& \(\lambda_i^*\) & \(E_i^\text{test}\) & \(E_i^\text{test}\) \\
+		\hline
+		0 & 10 & 0.2840 &  1.0 & 0.3267 & 0.9968 \\
+		1 & 10 & 0.4744 &  1.0 & 0.5901 & 1.0276 \\
+		2 & 10 & 0.5189 &  1.0 & 0.5479 & 1.1133 \\
+		3 &  5 & 0.2017 & 10.0 & 0.1989 & 0.8269 \\
+		4 & 10 & 0.2779 & 10.0 & 0.2624 & 1.0550 \\
+		5 &  5 & 0.2469 & 10.0 & 0.3006 & 1.2282 \\
+		6 &	 5 & 0.1850 &  1.0 & 0.2148 & 1.0298 \\
+		7 & 10 & 0.1639 &  1.0 & 0.1802 & 0.5901 \\
+		8 & 10 & 0.3721 & 10.0 & 0.4256 & 0.9441 \\
+		9 & 10 & 0.2785 &  1.0 & 0.3444 & 0.8467 \\
+		\hline
+	\end{tabular}
+	\caption{The output of a run of the two level cross validation.}
+	\label{table:two-cv}
+\end{table}
+
+The optimal parameter for the linear regression matches what we found
+in the previous section—there we found that \(\lambda \in [10^{-2}, 10^1]\)
+was optimal. The consistency is to be expected as the point of regularization
+is to constrain the fit of the model. Since a linear regression can
+only fit linear combinations of the features, the model is already fairly
+constrained in terms of what relations it can capture. Therefore, we
+expect that shuffling the data around should lead to similar fitted models
+for each iteration of the cross validation.
+
+The same is not the case for the neural network. A neural network, even a
+simple one, is a much more flexible model and can easily capture a variety
+of nonlinear relations in the data. Thus, without any other constraints,
+or with insufficient training, we do expect to see a greater variability
+in the fitted models. The data of table \ref{table:two-cv} illustrates this.
+
+\subsubsection*{3. Evaluate if there is any statistical significant difference between models}
+
+We have carried out pairwise \(t\)-tests based on the predictions
+calculated during the run of the two-level cross validation. The tests
+have been carried out using the function \texttt{ttest\_rel} from the
+\texttt{scipy.stats} package. We have obtained the following results outlined
+in table \ref{table:t-tests}.
+
+\begin{table}[h]
+	\centering
+	\begin{tabular}{r r r r r}
+		\hline
+		\multicolumn{1}{c}{Comparison} & \multicolumn{1}{c}{\(t\)}
+		& \multicolumn{1}{c}{\(p\)-value} & \multicolumn{1}{c}{mean}
+		& \multicolumn{1}{c}{95\% CI}\\
+		\hline
+		     ANN vs. Linear regression &  -3.2983 & 0.0093 & -0.0388 & (-0.0619, -0.0157)\\
+		              ANN vs. Baseline & -12.8518 & 0.0000 & -0.6655 & (-0.7670, -0.5640)\\
+		Linear regression vs. Baseline & -11.4606 & 0.0000 & -0.6267 & (-0.7339, -0.5195)\\
+		\hline
+	\end{tabular}
+	\caption{The result of the pairwise \(t\)-tests.}
+	\label{table:t-tests}
+\end{table}
+
+Based on the \(p\)-values, we can see that all the differences in model
+performance are statistically significant at the \(\alpha = 0.05\) level.
+This demonstrates that the models do perform differently on our
+specific data set. Whether this generalizes, would require investigating the
+performance on other similar sized datasets.
+
+It is clear that both the neural network and the linear regression
+outperform the baseline model. This is to be expected as the dependent variable
+has a skewed distribution, and so, it would be unexpected if the mean of the
+dataset would be sufficient to accurately predict the fare price based on the
+other features of the dataset. This is reflected in the mean and confidence intervals.
+The difference in performance against the baseline for either model
+is significantly larger than the difference in performance between
+the neural network and the linear regression.
+
+In this case, we can tell that the linear regression errors slightly more
+on the data set than the neural network does. Based on the confidence interval,
+this difference in average performance may be as small as \(-0.0157\).
+This makes sense as the neural network is a more flexible model than linear
+regression. A neural network can easily capture nonlinear relations
+among the features whereas a linear regression can only capture a linear
+combination of the features. It is therefore not surprising that the fit
+of the neural network is slightly better.
+
+Purely in terms of predicting the dependent variable, this test suggests
+that the neural network is preferable to the linear regression. However,
+the point of a statistical analysis is rarely just to predict the dependent
+variable. Usually, we also want to understand the relationship between
+the independent variables and the dependent one. To that end, the linear
+regression is arguably preferable as the model weights can easily be
+interpreted. This is unlike the neural network where the combination of the
+weights and nonlinear transformations between the layers do not allow for
+any easy interpretation. To interpret the neural network would require
+additional machinery to make sense of how the neural network predicts
+the dependent variable.
+
+Therefore, which model to prefer would depend on the specifics of the study.
+If the main point is to broadly characterize how the features determine the
+fare price, then the linear regression is preferable as it is a simpler model
+that can easily be interpreted. If, however, a more intricate analysis is desired,
+then the neural network may be worthwhile as long as there is put more effort
+into the interpretation of the model.
